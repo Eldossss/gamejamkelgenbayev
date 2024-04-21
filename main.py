@@ -31,6 +31,9 @@ class Game:
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                         exit()
+                    
+                    elif event.key == pygame.K_o: # sneaky cheatcode for testing last game :^)
+                        match.Match()
 
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.ringRect.collidepoint(event.pos) and not self.wins[0]:
@@ -48,7 +51,7 @@ class Game:
                     
                     elif self.pizzaRect.collidepoint(event.pos) and all(self.wins):
                         self.__here = False
-                        self.won = match.Match(610)
+                        self.won = match.Match()
 
                     pass
             

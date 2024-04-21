@@ -5,37 +5,36 @@ import time
 
 
 class Match:
-    def __init__(self, w):
+    def __init__(self):
         # 36 blocks for sq grid
         self.total = 36
         self.side = 6
-        self.size = w
+        self.size = 610
         self.__loop()
 
     def __path_to(self, f):
         return os.path.join(os.getcwd(), 'games', 'match', 'sprites', f)
 
     def __loop(self):
-        while 1:
-            pygame.init()
-            self.screen = pygame.display.set_mode((self.size + 200, self.size))
-            self.clock = pygame.time.Clock()
+        pygame.init()
+        self.screen = pygame.display.set_mode((self.size + 200, self.size))
+        self.clock = pygame.time.Clock()
 
-            self.__load_imgs()
-            self.__generate_field()
-            self.state = 0
-            self.pressed = []
-            self.ignore = set()
-            self.win = False
+        self.__load_imgs()
+        self.__generate_field()
+        self.state = 0
+        self.pressed = []
+        self.ignore = set()
+        self.win = False
 
-            if not self.__game():
-                break
+        self.__game()
 
     def __game(self):
+        self.screen.blit(self.bgimg, (-600, -350))
         while True:
             if self.win:
                 self.__draw_win()
-                continue # placeholder
+                return # placeholder
             
             self.__draw_blocks()
             if self.state == 2:
@@ -75,17 +74,21 @@ class Match:
 
     def __load_imgs(self):
         self.imgs = []
-        # placeholder names
-        self.frontimg = pygame.image.load(self.__path_to('s1.png')).convert_alpha()
+        self.bgimg = pygame.image.load(self.__path_to('bg.png'))
+        
         for i in range(0, self.total // 2):
-            self.imgs.append(pygame.image.load(self.__path_to(f'page-{i}.jpeg')).convert_alpha())
+            img = pygame.image.load(self.__path_to(f'Page {i + 1}.jpeg')).convert_alpha()
+            img = pygame.transform.scale(img, (90, 90))
+            self.imgs.append(img)
+            # self.imgs.append(pygame.image.load(self.__path_to(f'page-{i}.jpeg')).convert_alpha())
     
     def __draw_blocks(self):
+        
         for i in range(len(self.surfaces)):
             crd = self.sprite_id[i // self.side][i % self.side]
             if crd not in self.ignore and crd not in self.pressed:
-                pygame.draw.rect(self.screen, (255, 0, 0), self.surfaces[i])
-                self.screen.blit(self.frontimg, self.surfaces[i])
+                pygame.draw.rect(self.screen, (33, 121, 1), self.surfaces[i])
+        
     
     def __win_check(self):
         if len(self.ignore) == self.total:
@@ -96,8 +99,9 @@ class Match:
         wintext = font.render('You win', True, (0, 0, 0))
         wintextRect = wintext.get_rect()
         wintextRect.center = (self.size // 2, self.size // 2)
-        self.screen.fill((0, 0, 0))
+        self.screen.fill((255, 255, 255))
         self.screen.blit(wintext, wintextRect)
+        pygame.display.flip()
 
     def __generate_field(self):
         dif = self.total // 2
