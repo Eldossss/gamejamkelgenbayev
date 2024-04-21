@@ -17,13 +17,43 @@ class Game:
         '''
         self.wins = [False, False, False]
         self.won = False
-        self.screen = pygame.display.set_mode((1172, 922))
-        self.__load_icons()
-        self.__menu()
+        self.screen = pygame.display.set_mode((1920, 1080))
         self.__loop()
 
 
     def __loop(self):
+        # loop 1 for initial menus
+        self.__load_show_start()
+        t = True
+        while t:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
+                        exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    if not self.menu:
+                        if (987 <= pos[0] <= 1480) and (506 <= pos[1] <= 739):
+                            t = False
+        t = True
+        self.screen.fill((0, 0, 0))
+        self.screen.blit(self.guide, (0, 0))
+        pygame.display.flip()
+
+        while t:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
+                        exit()
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    t = False
+
+        self.__load_icons()
+        self.__menu()
         while True:          
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -53,10 +83,16 @@ class Game:
                         self.__here = False
                         self.won = match.Match()
 
-                    pass
             
             if not self.__here:
                 self.__menu()
+            if self.won:
+                break
+
+        winimg = pygame.image.load('bg/win.jpg')
+        self.screen.blit(winimg, (0, 0))
+        pygame.display.flip()
+
 
 
     def __menu(self):
@@ -92,11 +128,19 @@ class Game:
         self.sewerRect = self.sewerImg.get_rect()
         self.sewerRect.center = (500, 500)
         
-
     def __draw_icons(self):
            self.screen.blit(self.pizzaImg, self.pizzaRect)
            self.screen.blit(self.tankImg, self.tankRect)
            self.screen.blit(self.ringImg, self.ringRect)
            self.screen.blit(self.sewerImg, self.sewerRect)
+
+    def __load_show_start(self):
+        self.menu = 0
+        img = pygame.image.load('bg/start.jpeg').convert_alpha()
+        self.guide = pygame.image.load('bg/guide.png')
+        self.guide = pygame.transform.scale(self.guide, (1920, 1080))
+        self.screen.blit(img, (0, 0))
+        pygame.display.flip()
+
 
 Game()
