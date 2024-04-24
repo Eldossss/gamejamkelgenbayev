@@ -1,6 +1,7 @@
 import pygame
 import os
 from random import randint
+import time
 
 def tanks():
     def pathto(dir2open,f):
@@ -13,6 +14,7 @@ def tanks():
     endka_img = pygame.image.load(pathto("sprites","congrats.png"))  # Load the "endka.png" image
     endka_img = pygame.transform.scale(endka_img,(w,h))
     background_image = pygame.transform.scale(background_image, (w, h))
+    pygame.display.set_caption('Tanks')
     TILE = 32
     FPS = 60
     start_song = pygame.mixer.music.load(pathto("sprites","level_start.mp3"))
@@ -40,8 +42,11 @@ def tanks():
         def update(self):
             if self.blue_kills >= 3 and self.very_cool_text is None:
                 self.very_cool_text = fontUI.render("Very cool", 1, (255, 255, 255))
+
                 # Устанавливаем уровень затемнения
                 self.darken_level = 0
+                time.sleep(3)
+                return True
 
             # Увеличиваем уровень затемнения после появления надписи "Very cool"
             if self.very_cool_text:
@@ -286,7 +291,9 @@ def tanks():
             bullet.update()
         for obj in objects:
             obj.update()
-        ui.update()
+        ex = ui.update()
+        if ex:
+            return True
 
         window.blit(background_image, (0, 0))
         for bullet in bullets:

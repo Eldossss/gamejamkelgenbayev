@@ -10,6 +10,7 @@ class Match:
         self.total = 36
         self.side = 6
         self.size = 610
+        pygame.display.set_caption('Match 2')
         self.__loop()
 
     def __path_to(self, f):
@@ -52,9 +53,7 @@ class Match:
                 if event.type == pygame.QUIT:
                     return False
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_r:
-                        return True
-                    elif event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
                         return False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     for i in range(len(self.surfaces)):

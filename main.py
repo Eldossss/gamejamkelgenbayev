@@ -55,6 +55,7 @@ class Game:
         self.__load_icons()
         self.__menu()
         while True:
+            print(self.won)
             pygame.display.set_caption('Selection menu')   
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -84,7 +85,7 @@ class Game:
                         self.__here = False
                         self.won = match.Match()
 
-            
+            pygame.display.flip()
             if not self.__here:
                 self.__menu()
             if self.won:

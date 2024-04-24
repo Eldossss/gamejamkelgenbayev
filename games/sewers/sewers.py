@@ -14,7 +14,7 @@ def sewers():
     background_image = pygame.image.load(pathto('lair.webp'))
     background_image = pygame.transform.scale(background_image,(SCREEN_WIDTH, SCREEN_HEIGHT) )
 
-    pygame.display.set_caption("Препятствия")
+    pygame.display.set_caption("Sewer escape")
     font = pygame.font.Font(None, 70)
 
     class Player(pygame.sprite.Sprite):
